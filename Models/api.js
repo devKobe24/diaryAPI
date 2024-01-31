@@ -1,6 +1,7 @@
 const morgan = require('morgan');
 const url = require('url');
 const uuidAPIKey = require('uuid-apikey');
+const cors = require('cors');
 
 console.log(uuidAPIKey.create());
 
@@ -20,6 +21,12 @@ app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors()); // 모든 라우터에 cors 적용
+
+/* axios 요청 */
+app.get('/', (req, res) => {
+	res.sendFile(__dirname + "/board")
+})
 
 /* 테스트를 위한 게시글 데이터 */
 let diaryList = [];
