@@ -2,6 +2,9 @@ const morgan = require('morgan');
 const url = require('url');
 const uuidAPIKey = require('uuid-apikey');
 const cors = require('cors');
+const dotenv = require('dotenv');
+const db = require("./src/config/db");
+dotenv.config();
 
 console.log(uuidAPIKey.create());
 
@@ -12,6 +15,7 @@ const key = {
 
 /* express app generate */
 const express = require('express');
+const { resolve } = require('path');
 const app = express();
 
 /* 포트 설정 */
@@ -34,21 +38,35 @@ app.get('/', (req, res) => {
 
 /* 게시글 API */
 app.get('/diary', (req, res) => {
-  res.send(diaryList);
+	return new Promise((resolve, reject) => {
+		db.query("SELECT * FROM diary", (err, data) => {
+			if (err) reject(err);
+			resolve(data);
+			res.send(data);
+		});
+	});
 });
 
 /* POST */
 app.post('/diary', (req, res) => {
-  const diary = {
-    "id": ++numberOfDiary,
-    "user_id": req.body.user_id,
-    "date": new Date(),
-    "title": req.body.title,
-    "content": req.body.content
-  };
-  diaryList.push(diary);
+  // const diary = {
+  //   "id": ++numberOfDiary,
+  //   "user_id": req.body.user_id,
+  //   "date": new Date(),
+  //   "title": req.body.title,
+  //   "content": req.body.content
+  // };
+  // diaryList.push(diary);
 
-  res.redirect('/diary');
+  // res.redirect('/diary');
+	return new Promise((resolve, reject) => {
+		const query = "INSERT INTO diary(id, user_name, date, title, content) VALUES(?, ?, ?, ?, ?);";
+		db.query(query, [++numberOfDiary, req.body.user_id, new Date(), req.body.title, req.body.content], (err) => {
+			if (err) reject(err);
+			resolve({ success: true});
+			res.redirect('/diary')
+		});
+	});
 });
 /* END POST */
 
