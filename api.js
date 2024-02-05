@@ -60,10 +60,10 @@ app.post('/diary', (req, res) => {
 
   // res.redirect('/diary');
 	return new Promise((resolve, reject) => {
-		const query = "INSERT INTO diary(id, user_name, date, title, content) VALUES(?, ?, ?, ?, ?);";
-		db.query(query, [++numberOfDiary, req.body.user_id, new Date(), req.body.title, req.body.content], (err) => {
+		const query = "INSERT INTO diary(user_name, date, title, content) VALUES(?, ?, ?, ?);";
+		db.query(query, [req.body.user_id, new Date(), req.body.title, req.body.content], (err) => {
 			if (err) reject(err);
-			resolve({ success: true});
+			resolve({ success: true });
 			res.redirect('/diary')
 		});
 	});
@@ -97,13 +97,14 @@ app.put('/diary/:id', (req, res) => {
 /* DELETE */
 app.delete('/diary/:id', (req, res) => {
 	// req.params.id 값 찾아 리스트에서 삭제
-	const findItem = diaryList.find((item) => {
-		return item.id == + req.params.id
+	return new Promise((resolve, reject) => {
+		const query = `DELETE FROM diary WHERE id = ${req.params.id};`;
+		db.query(query, [], (err) => {
+			if (err) reject(err);
+			resolve({ success: true });
+			res.redirect('/diary');
+		});
 	});
-	const idx = diaryList.indexOf(findItem);
-	diaryList.splice(idx, 1);
-
-	res.redirect('/diary');
 });
 /* END DELETE */
 
