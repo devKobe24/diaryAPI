@@ -61,7 +61,7 @@ app.post('/diary', (req, res) => {
   // res.redirect('/diary');
 	return new Promise((resolve, reject) => {
 		const query = "INSERT INTO diary(user_name, date, title, content) VALUES(?, ?, ?, ?);";
-		db.query(query, [req.body.user_id, new Date(), req.body.title, req.body.content], (err) => {
+		db.query(query, [req.body.user_name, new Date(), req.body.title, req.body.content], (err) => {
 			if (err) reject(err);
 			resolve({ success: true });
 			res.redirect('/diary')
@@ -73,24 +73,34 @@ app.post('/diary', (req, res) => {
 /* PUT */
 app.put('/diary/:id', (req, res) => {
   // req.params.id 값 찾아 리스트에서 삭제
-  const findItem = diaryList.find((item) => {
-    return item.id == +req.params.id
-  });
+	return new Promise((resolve, reject) => {
+		const query = `UPDATE diary SET user_name = '${req.body.user_name}', title = '${req.body.title}', content = '${req.body.content}' WHERE id = ${req.params.id};`;
+		// const query2 = `UPDATE diary SET date = ${new Date()} WHRER id = ${req.params.id};`;
+		// const query3 = `SELECT diary(${req.params.id}, user_name, date, title, content) VALUES(?, ?, ?, ?, ?`
+		db.query(query, [req.params.id, req.body.user_name, req.body.title, req.body.content], (err) => {
+			if (err) reject(err);
+			resolve({ success: true });
+			res.redirect('/diary');
+		});
+	});
+  // const findItem = diaryList.find((item) => {
+  //   return item.id == +req.params.id
+  // });
 
-  const idx = diaryList.indexOf(findItem);
-  diaryList.splice(idx, 1);
+  // const idx = diaryList.indexOf(findItem);
+  // diaryList.splice(idx, 1);
 
-  // 리스트에 새로운 요소 추가
-  const diary = {
-		"id": +req.params.id,
-		"user_id": req.body.user_id,
-		"date": new Date(),
-		"title": req.body.title,
-		"content": req.body.content
-	};
-	diaryList.push(diary);
+  // // 리스트에 새로운 요소 추가
+  // const diary = {
+	// 	"id": +req.params.id,
+	// 	"user_id": req.body.user_id,
+	// 	"date": new Date(),
+	// 	"title": req.body.title,
+	// 	"content": req.body.content
+	// };
+	// diaryList.push(diary);
 
-	res.redirect('/diary');
+	// res.redirect('/diary');
 });
 /* END PUT */
 
