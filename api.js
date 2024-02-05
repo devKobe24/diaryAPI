@@ -29,7 +29,7 @@ app.use(cors()); // 모든 라우터에 cors 적용
 
 /* 테스트를 위한 게시글 데이터 */
 let diaryList = [];
-let numberOfDiary = 0;
+// let numberOfDiary = 0;
 
 /* 라우팅 설정 */
 app.get('/', (req, res) => {
@@ -49,16 +49,6 @@ app.get('/diary', (req, res) => {
 
 /* POST */
 app.post('/diary', (req, res) => {
-  // const diary = {
-  //   "id": ++numberOfDiary,
-  //   "user_id": req.body.user_id,
-  //   "date": new Date(),
-  //   "title": req.body.title,
-  //   "content": req.body.content
-  // };
-  // diaryList.push(diary);
-
-  // res.redirect('/diary');
 	return new Promise((resolve, reject) => {
 		const query = "INSERT INTO diary(user_name, date, title, content) VALUES(?, ?, ?, ?);";
 		db.query(query, [req.body.user_name, new Date(), req.body.title, req.body.content], (err) => {
@@ -75,32 +65,12 @@ app.put('/diary/:id', (req, res) => {
   // req.params.id 값 찾아 리스트에서 삭제
 	return new Promise((resolve, reject) => {
 		const query = `UPDATE diary SET user_name = '${req.body.user_name}', title = '${req.body.title}', content = '${req.body.content}' WHERE id = ${req.params.id};`;
-		// const query2 = `UPDATE diary SET date = ${new Date()} WHRER id = ${req.params.id};`;
-		// const query3 = `SELECT diary(${req.params.id}, user_name, date, title, content) VALUES(?, ?, ?, ?, ?`
 		db.query(query, [req.params.id, req.body.user_name, req.body.title, req.body.content], (err) => {
 			if (err) reject(err);
 			resolve({ success: true });
 			res.redirect('/diary');
 		});
 	});
-  // const findItem = diaryList.find((item) => {
-  //   return item.id == +req.params.id
-  // });
-
-  // const idx = diaryList.indexOf(findItem);
-  // diaryList.splice(idx, 1);
-
-  // // 리스트에 새로운 요소 추가
-  // const diary = {
-	// 	"id": +req.params.id,
-	// 	"user_id": req.body.user_id,
-	// 	"date": new Date(),
-	// 	"title": req.body.title,
-	// 	"content": req.body.content
-	// };
-	// diaryList.push(diary);
-
-	// res.redirect('/diary');
 });
 /* END PUT */
 
