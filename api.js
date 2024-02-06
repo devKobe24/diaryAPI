@@ -88,29 +88,6 @@ app.delete('/diary/:id', (req, res) => {
 });
 /* END DELETE */
 
-/* 게시글 검색 API using uuid-key */
-// app.get('/diary/:type', (req, res) => {
-	// if (uuidAPIKey.isAPIKey(apikey) && uuidAPIKey.check(apikey, key.uuid)) {
-	// 	if (type === 'search') { // 키워드로 게시글 검색
-	// 		const keyword = queryData.keyword;
-	// 		const result = diaryList.filter((e) => {
-	// 			return e.title.includes(keyword)
-	// 		})
-	// 		res.send(result);
-	// 	} else if (type === 'user') { // 유저 이름으로 게시글 검색
-	// 		const user_id = queryData.user_id;
-	// 		const result = diaryList.filter((e) => {
-	// 			return e.user_id === user_id;
-	// 		});
-	// 		res.send(result);
-	// 	} else {
-	// 		res.send('Invalid User.');
-	// 	}
-	// } else {
-	// 	res.send('Invalid API Key.');
-	// }
-// })
-
 /* 서버 포트 연결.. */
 app.listen(app.get('port'), () => {
 	console.log(app.get('port'), '번 포트에서 서버 실행 중...')
