@@ -3,7 +3,7 @@ const url = require('url');
 const uuidAPIKey = require('uuid-apikey');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const db = require("./src/config/db");
+const db = require("./db");
 dotenv.config();
 
 console.log(uuidAPIKey.create());
@@ -89,30 +89,27 @@ app.delete('/diary/:id', (req, res) => {
 /* END DELETE */
 
 /* 게시글 검색 API using uuid-key */
-app.get('/diary/:apikey/:type', (req, res) => {
-	let { type, apikey } = req.params;
-	const queryData = url.parse(req.url, true).query;
-
-	if (uuidAPIKey.isAPIKey(apikey) && uuidAPIKey.check(apikey, key.uuid)) {
-		if (type === 'search') { // 키워드로 게시글 검색
-			const keyword = queryData.keyword;
-			const result = diaryList.filter((e) => {
-				return e.title.includes(keyword)
-			})
-			res.send(result);
-		} else if (type === 'user') { // 유저 이름으로 게시글 검색
-			const user_id = queryData.user_id;
-			const result = diaryList.filter((e) => {
-				return e.user_id === user_id;
-			});
-			res.send(result);
-		} else {
-			res.send('Invalid User.');
-		}
-	} else {
-		res.send('Invalid API Key.');
-	}
-})
+// app.get('/diary/:type', (req, res) => {
+	// if (uuidAPIKey.isAPIKey(apikey) && uuidAPIKey.check(apikey, key.uuid)) {
+	// 	if (type === 'search') { // 키워드로 게시글 검색
+	// 		const keyword = queryData.keyword;
+	// 		const result = diaryList.filter((e) => {
+	// 			return e.title.includes(keyword)
+	// 		})
+	// 		res.send(result);
+	// 	} else if (type === 'user') { // 유저 이름으로 게시글 검색
+	// 		const user_id = queryData.user_id;
+	// 		const result = diaryList.filter((e) => {
+	// 			return e.user_id === user_id;
+	// 		});
+	// 		res.send(result);
+	// 	} else {
+	// 		res.send('Invalid User.');
+	// 	}
+	// } else {
+	// 	res.send('Invalid API Key.');
+	// }
+// })
 
 /* 서버 포트 연결.. */
 app.listen(app.get('port'), () => {
