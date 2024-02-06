@@ -3,7 +3,7 @@ const url = require('url');
 const uuidAPIKey = require('uuid-apikey');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const db = require("./src/config/db");
+const db = require("./db");
 dotenv.config();
 
 console.log(uuidAPIKey.create());
