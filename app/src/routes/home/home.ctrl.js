@@ -1,5 +1,6 @@
 "use strict";
 
+const UserStorage = require("../../models/UserStorage");
 const Diary = require("../../models/Diary");
 
 const output = {

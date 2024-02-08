@@ -10,7 +10,14 @@ class UserStorage {
   };
 
   static getAllDiaryData() {
-    return this.#diaryData
+    const diaryData = {
+      id: this.#diaryData.id,
+      userName: this.#diaryData.userName,
+      date: this.#diaryData.date,
+      title: this.#diaryData.title,
+      content: this.#diaryData.content
+    };
+    return diaryData;
   }
 
   static getUsersData(...fields) {
