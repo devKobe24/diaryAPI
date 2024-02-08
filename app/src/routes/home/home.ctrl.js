@@ -1,6 +1,6 @@
 "use strict";
 
-const UserStorage = require("../../models/UserStorage");
+const Diary = require("../../models/Diary");
 
 const output = {
   home: (req, res) => {
@@ -13,23 +13,10 @@ const output = {
 
 const process = {
   diary: (req, res) => {
-    const id = req.body.id,
-      userName = req.body.userName,
-      date = req.body.date,
-      title = req.body.title,
-      content = req.body.content;
-
-      const users = UserStorage.getUsersData("id", "userName");
-      const response = {};
-
-      if (users.id.includes(id)) {
-        response.success = true;
-        return res.json(response);
-      }
-
-      response.success = false;
-      response.msg = "Invalid User Id";
-      return res.json(response);
+    const diaryInfo = new Diary(req.body);
+    const response = diaryInfo.getDiaryInfo();
+    console.log(response);
+    return res.json(response);
   }
 };
 

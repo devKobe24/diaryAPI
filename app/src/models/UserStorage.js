@@ -24,6 +24,17 @@ class UserStorage {
     }, {});
     return newUsers;
   }
+
+  static validateId(id) {
+    const diaryData = this.#diaryData;
+    const idx = diaryData.id.indexOf(id)
+    const objectKeysForValidation = Object.keys(diaryData) // => [id, userName, date, title, content]
+    const diaryInfo = objectKeysForValidation.reduce((newUser, info) => {
+      newUser[info] = diaryData[info][idx];
+      return newUser;
+    }, {});
+    return diaryInfo;
+  }
 }
 
 module.exports = UserStorage;
