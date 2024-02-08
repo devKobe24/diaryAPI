@@ -16,7 +16,11 @@ const process = {
   diary: (req, res) => {
     const diaryInfo = new Diary(req.body);
     const response = diaryInfo.getDiaryInfo();
-    console.log(response);
+    return res.json(response);
+  },
+  registDiary: (req, res) => {
+    const diaryInfo = new Diary(req.body);
+    const response = diaryInfo.registDiary();
     return res.json(response);
   }
 };

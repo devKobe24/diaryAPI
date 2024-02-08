@@ -6,6 +6,7 @@ class Diary {
   constructor(body) {
     this.body = body;
   }
+
   //getDiaryInfo
   getDiaryInfo() {
     const body = this.body
@@ -16,6 +17,13 @@ class Diary {
       }
       return { success: false, msg: "Invalid Diary Id." };
     }
+  }
+  
+  // registeDiary
+  registDiary() {
+    const body = this.body;
+    const response = UserStorage.save(body);
+    return response;
   }
 }
 

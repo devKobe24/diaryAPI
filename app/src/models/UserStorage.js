@@ -7,7 +7,7 @@ class UserStorage {
     date: ["2024-03-08 08:46:00", "2024-03-08 08:46:00", "2024-03-08 08:46:00"],
     title: ["title1", "title2", "title3"],
     content: ["content1", "content2", "content3"]
-  };
+  }
 
   static getAllDiaryData() {
     const diaryData = {
@@ -41,6 +41,16 @@ class UserStorage {
       return newUser;
     }, {});
     return diaryInfo;
+  }
+
+  static save(data) {
+    const diaryData = this.#diaryData;
+    diaryData.id.push(data.id);
+    diaryData.userName.push(data.userName);
+    diaryData.date.push(data.date);
+    diaryData.title.push(data.title);
+    diaryData.content.push(data.content);
+    return { success: true };
   }
 }
 
