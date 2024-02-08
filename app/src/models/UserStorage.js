@@ -1,27 +1,59 @@
 "use strict";
 
+const { resolve } = require("url");
+const db = require("../config/db");
+const { rejects } = require("assert");
+
 class UserStorage {
-  static #diaryData = {
-    id: ["1", "2", "3"],
-    userName: ["a", "b", "c"],
-    date: ["2024-03-08 08:46:00", "2024-03-08 08:46:00", "2024-03-08 08:46:00"],
-    title: ["title1", "title2", "title3"],
-    content: ["content1", "content2", "content3"]
+  static #getAllDiaryData(data, id, userName) {
+    const diaryData = JSON.parse(data);
+
+    const diaryIdIndex = diaryData.id.indexOf(id);
+    // const userNameIndex = diaryData.userName.indexOf(userName);
+
+    const keys = Object.keys(diaryData);
+    const diaryInfo = keys.reduce((newDiary, info) => {
+      newDiary[info] = diaryData[info][diaryIdIndex];
+      // newDiary[info] = diaryData[info][userNameIndex];
+      // console.log(newDiary[info]);
+      console.log(newDiary);
+      // console.log(info);
+      return newDiary;
+    }, {});
+    return diaryInfo;
+
+
+
+    // const diaryInfo = {
+    //   id: diaryData.id,
+    //   userName: diaryData.userName,
+    //   date: diaryData.date,
+    //   title: diaryData.title,
+    //   content: diaryData.content
+    //   }
+    //   return diaryInfo;
   }
 
+  static getSpecificDiaryInfo(id) {
+    return new Promise((resolve, rejects) => {
+      db.query("SELECT * FROM diary WHERE id = ?", [id], (err, data) => {
+        if (err) rejects(err);
+        resolve(data[0]);
+      });
+    });
+  }
+  
   static getAllDiaryData() {
-    const diaryData = {
-      id: this.#diaryData.id,
-      userName: this.#diaryData.userName,
-      date: this.#diaryData.date,
-      title: this.#diaryData.title,
-      content: this.#diaryData.content
-    };
-    return diaryData;
+    return new Promise((resolve, rejects) => {
+      db.query("SELECT * FROM diary", (err, data) => {
+        if (err) rejects(err);
+        resolve(data);
+      });
+    });
   }
 
   static getUsersData(...fields) {
-    const diaryData = this.#diaryData;
+    // const diaryData = this.#diaryData;
     const newUsers = fields.reduce((newUsers, field) => {
       if (diaryData.hasOwnProperty(field)) {
         newUsers[field] = diaryData[field];
@@ -33,7 +65,7 @@ class UserStorage {
   }
 
   static validateId(id) {
-    const diaryData = this.#diaryData;
+    // const diaryData = this.#diaryData;
     const idx = diaryData.id.indexOf(id)
     const objectKeysForValidation = Object.keys(diaryData) // => [id, userName, date, title, content]
     const diaryInfo = objectKeysForValidation.reduce((newUser, info) => {
@@ -44,7 +76,7 @@ class UserStorage {
   }
 
   static save(data) {
-    const diaryData = this.#diaryData;
+    // const diaryData = this.#diaryData;
     diaryData.id.push(data.id);
     diaryData.userName.push(data.userName);
     diaryData.date.push(data.date);

@@ -22,6 +22,16 @@ const process = {
     const diaryInfo = new Diary(req.body);
     const response = diaryInfo.registDiary();
     return res.json(response);
+  },
+  getAllDiaryData: async (req, res) => {
+    const diaryInfo = new Diary();
+    const response = await diaryInfo.getAllDiaryData();
+    return res.json(response);
+  },
+  getSpecificDiaryInfo: (req, res) => {
+    const diaryInfo = new Diary(req.body);
+    const response = diaryInfo.getSpecificDiaryInfo();
+    return res.json(response);
   }
 };
 

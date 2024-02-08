@@ -57,6 +57,7 @@
     "form-data": "^4.0.0",
     "forwarded": "^0.2.0",
     "fresh": "^0.5.2",
+    "fs": "^0.0.1-security",
     "fsevents": "^2.3.3",
     "function-bind": "^1.1.2",
     "get-intrinsic": "^1.2.2",
@@ -132,7 +133,6 @@
     "web": "^0.0.2",
     "yallist": "^4.0.0"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "nodemon ./bin/www.js",
     "test": "echo \"Error: no test specified\" && exit 1"
